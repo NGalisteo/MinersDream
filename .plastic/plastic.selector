@@ -1,0 +1,4 @@
+repository "MinersDream 2026-05-14_02-08-45/MinersDream@6872787534407@cloud"
+  path "/"
+    br "/main"
+    co "/main"
