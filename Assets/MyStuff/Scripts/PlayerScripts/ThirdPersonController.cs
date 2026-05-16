@@ -214,7 +214,7 @@ public class ThirdPersonController : MonoBehaviour
         forward = forward * directionZ;
         right = right * directionX; //WE ONLY USE RIGHT BECAUSE LEFT ITS JUST RIGHT -1
 
-        //if i dont add this the character is going to always be facing towards the center of the world when i stop pressing a key
+        //if i dont add this the character is going to always be facing towards the center of the world when I stop pressing a key
         if (directionX != 0 || directionZ != 0)
         {
             //Calculate the direction the player wants to move in this case (forward + right)
@@ -259,6 +259,7 @@ public class ThirdPersonController : MonoBehaviour
             isJumping = false;
         }
     }
+
 
 
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class InputManager : MonoBehaviour
 {
@@ -10,10 +11,25 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     private LayerMask placementLayerMask;
 
-    public Vector3 GetSelectedMapPosition()
+    private PlayerInputActions action;
+
+    private void Awake()
     {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = sceneCamera.nearClipPlane;
+        action = new PlayerInputActions();
+    }
+
+    private void OnEnable()
+    {
+        action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        action.Disable();
+    }
+    public Vector3 GetSelectedMapPosition()
+    {;
+        Vector2 mousePos = action.BuildingSystem.CursorPosition.ReadValue<Vector2>();
         Ray ray = sceneCamera.ScreenPointToRay(mousePos);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100,  placementLayerMask))
