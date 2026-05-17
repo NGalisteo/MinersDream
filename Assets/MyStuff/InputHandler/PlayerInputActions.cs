@@ -300,6 +300,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PlaceItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a1e89e9-fdc7-4602-94d2-b129b95df8b3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escap"",
+                    ""type"": ""Button"",
+                    ""id"": ""fbcacffa-7fd3-43b3-9e33-4e5c027f460c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -311,6 +329,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CursorPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a393f62-c09f-4ac6-ab15-15b3723b758b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1781ba71-d12b-40bc-b720-41fa5d7b3748"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -350,6 +390,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // BuildingSystem
         m_BuildingSystem = asset.FindActionMap("BuildingSystem", throwIfNotFound: true);
         m_BuildingSystem_CursorPosition = m_BuildingSystem.FindAction("CursorPosition", throwIfNotFound: true);
+        m_BuildingSystem_PlaceItem = m_BuildingSystem.FindAction("PlaceItem", throwIfNotFound: true);
+        m_BuildingSystem_Escap = m_BuildingSystem.FindAction("Escap", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -680,6 +722,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_BuildingSystem;
     private List<IBuildingSystemActions> m_BuildingSystemActionsCallbackInterfaces = new List<IBuildingSystemActions>();
     private readonly InputAction m_BuildingSystem_CursorPosition;
+    private readonly InputAction m_BuildingSystem_PlaceItem;
+    private readonly InputAction m_BuildingSystem_Escap;
     /// <summary>
     /// Provides access to input actions defined in input action map "BuildingSystem".
     /// </summary>
@@ -695,6 +739,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "BuildingSystem/CursorPosition".
         /// </summary>
         public InputAction @CursorPosition => m_Wrapper.m_BuildingSystem_CursorPosition;
+        /// <summary>
+        /// Provides access to the underlying input action "BuildingSystem/PlaceItem".
+        /// </summary>
+        public InputAction @PlaceItem => m_Wrapper.m_BuildingSystem_PlaceItem;
+        /// <summary>
+        /// Provides access to the underlying input action "BuildingSystem/Escap".
+        /// </summary>
+        public InputAction @Escap => m_Wrapper.m_BuildingSystem_Escap;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -724,6 +776,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CursorPosition.started += instance.OnCursorPosition;
             @CursorPosition.performed += instance.OnCursorPosition;
             @CursorPosition.canceled += instance.OnCursorPosition;
+            @PlaceItem.started += instance.OnPlaceItem;
+            @PlaceItem.performed += instance.OnPlaceItem;
+            @PlaceItem.canceled += instance.OnPlaceItem;
+            @Escap.started += instance.OnEscap;
+            @Escap.performed += instance.OnEscap;
+            @Escap.canceled += instance.OnEscap;
         }
 
         /// <summary>
@@ -738,6 +796,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CursorPosition.started -= instance.OnCursorPosition;
             @CursorPosition.performed -= instance.OnCursorPosition;
             @CursorPosition.canceled -= instance.OnCursorPosition;
+            @PlaceItem.started -= instance.OnPlaceItem;
+            @PlaceItem.performed -= instance.OnPlaceItem;
+            @PlaceItem.canceled -= instance.OnPlaceItem;
+            @Escap.started -= instance.OnEscap;
+            @Escap.performed -= instance.OnEscap;
+            @Escap.canceled -= instance.OnEscap;
         }
 
         /// <summary>
@@ -863,5 +927,19 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCursorPosition(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PlaceItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPlaceItem(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Escap" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEscap(InputAction.CallbackContext context);
     }
 }

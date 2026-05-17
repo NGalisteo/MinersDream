@@ -214,6 +214,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "PlaceItem",
+                    "type": "Button",
+                    "id": "1a1e89e9-fdc7-4602-94d2-b129b95df8b3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Escap",
+                    "type": "Button",
+                    "id": "fbcacffa-7fd3-43b3-9e33-4e5c027f460c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -225,6 +243,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "CursorPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a393f62-c09f-4ac6-ab15-15b3723b758b",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1781ba71-d12b-40bc-b720-41fa5d7b3748",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
