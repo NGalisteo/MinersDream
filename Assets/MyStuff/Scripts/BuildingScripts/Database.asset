@@ -15,9 +15,9 @@ MonoBehaviour:
   objectsData:
   - <Name>k__BackingField: IronMine
     <ID>k__BackingField: 0
-    <Size>k__BackingField: {x: 2, y: 4}
+    <Size>k__BackingField: {x: 2, y: 3}
     <Prefab>k__BackingField: {fileID: 7822702122736691839, guid: 7037510dfe01fad44a4f780db35c8ad5, type: 3}
   - <Name>k__BackingField: RubyMine
     <ID>k__BackingField: 1
-    <Size>k__BackingField: {x: 2, y: 4}
+    <Size>k__BackingField: {x: 2, y: 3}
     <Prefab>k__BackingField: {fileID: 7822702122736691839, guid: 94749c028d71eea448aeb5d075326c7c, type: 3}
