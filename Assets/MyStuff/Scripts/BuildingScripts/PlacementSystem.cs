@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlacementSystem : MonoBehaviour
@@ -17,15 +16,18 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private GameObject gridVisualization;
 
-    private void Start()
+
+
+    void Start()
     {
         StopPlacement();
     }
 
+
     public void StartPlacement(int ID)
     {
         selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID);
-        if(selectedObjectIndex < 0 )
+        if (selectedObjectIndex < 0)
         {
             Debug.LogError($"No ID found {ID}");
             return;
@@ -38,7 +40,7 @@ public class PlacementSystem : MonoBehaviour
 
     private void PlaceStructure()
     {
-        if(inputManager.IsPointerOverUI())
+        if (inputManager.IsPointerOverUI())
         {
             return;
         }
@@ -51,10 +53,11 @@ public class PlacementSystem : MonoBehaviour
     private void StopPlacement()
     {
         selectedObjectIndex = -1;
-        gridVisualization.SetActive(true);
-        cellIndicator.SetActive(true);
+        gridVisualization.SetActive(false);
+        cellIndicator.SetActive(false);
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
+
     }
 
     private void Update()
