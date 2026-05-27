@@ -100,7 +100,7 @@ public class PlacementSystem : MonoBehaviour
         gridVisualization.SetActive(true );
         buildingState = new RemovingState(grid, preview, placedObjectsData, objectPlacer);
         inputManager.OnClicked += PlaceStructure; //still subscribes to the same events, clicking will now remove instead of place because removingstate handles onaction differently
-        inputManager.OnExit += StopPlacement;
+        inputManager.OnExit += StopPlacement; //same for here
     }
 
     
