@@ -1859,7 +1859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryController
   inventoryUI: {fileID: 1105107380}
-  inventorySize: 10
+  inventorySize: 30
 --- !u!1 &1475469791
 GameObject:
   m_ObjectHideFlags: 0
