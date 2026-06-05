@@ -22,4 +22,7 @@ public class ObjectData
     public Vector2Int Size { get; private set; } = Vector2Int.one; //size, it defaults to 1x1 in case we dont put a size
     [field: SerializeField]
     public GameObject Prefab { get; private set; } //the prefab or model for this item.
+
+    [field: SerializeField]
+    public Sprite sprite; //sprite for the inventory to display
 }

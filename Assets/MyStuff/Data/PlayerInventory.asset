@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: PlayerInventory
   m_EditorClassIdentifier: Assembly-CSharp::InventorySO
   inventoryItems:
-  - quantity: 2
-    item: {fileID: 11400000, guid: 64700385ec695844abc30e53b7262a68, type: 2}
-  - quantity: 5
+  - quantity: 1
     item: {fileID: 11400000, guid: 64700385ec695844abc30e53b7262a68, type: 2}
   - quantity: 1
     item: {fileID: 11400000, guid: 008a90c86b7c46045a02c95445fd1a51, type: 2}
+  - quantity: 0
+    item: {fileID: 0}
   - quantity: 0
     item: {fileID: 0}
   - quantity: 0

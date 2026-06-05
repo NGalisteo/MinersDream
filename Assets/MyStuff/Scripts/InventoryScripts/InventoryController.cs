@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Inventory
 {
     public class InventoryController : MonoBehaviour
@@ -14,6 +15,9 @@ namespace Inventory
 
         [SerializeField]
         private InventorySO inventoryData;
+
+        [SerializeField]
+        private PlacementSystem placementSystem;
 
         public List<InventoryItem> initialItems = new List<InventoryItem>();
 
@@ -74,14 +78,18 @@ namespace Inventory
         private void HandleDescriptionRequest(int itemIndex)
         {
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (inventoryItem.isEmpty)
-            {
-                inventoryUI.ResetSelection();
-                return;
-            }
+            //if (inventoryItem.isEmpty)
+            //{
+            //    inventoryUI.ResetSelection();
+            //    return;
+            //}
             ItemSO item = inventoryItem.item;
-            inventoryUI.UpdateDescription(itemIndex, item.ItemImage,
-                item.name, item.Description);
+            //inventoryUI.UpdateDescription(itemIndex, item.ItemImage,
+            //    item.name, item.Description);
+
+        
+            placementSystem.StartPlacement(item.ObjectID);
+            inventoryUI.Hide();
 
         }
 
