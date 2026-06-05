@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a41b79317069684c8b64962bc3d0376, type: 3}
   m_Name: Ruby
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  <IsStackable>k__BackingField: 0
+  <IsStackable>k__BackingField: 1
   <MaxStackSize>k__BackingField: 99
   <Name>k__BackingField: Ruby Mine
   <Description>k__BackingField: An Ruby mine lmfao

@@ -20,6 +20,8 @@ namespace Inventory.UI
 
         List<UIInventoryItem> listOfUIItems = new List<UIInventoryItem>();
 
+        private CanvasGroup canvasGroup;
+
         private int currentlyDraggedItemIndex = -1;
 
         public event Action<int> OnDescriptionRequested,
@@ -30,6 +32,7 @@ namespace Inventory.UI
 
         private void Awake()
         {
+            canvasGroup = transform.root.GetComponent<CanvasGroup>();
             Hide();
             mouseFollower.Toggle(false);
             itemDescription.ResetDescription();
@@ -112,6 +115,7 @@ namespace Inventory.UI
         public void Show()
         {
             gameObject.SetActive(true);
+            canvasGroup.blocksRaycasts = true;
             ResetSelection();
         }
 
@@ -132,6 +136,7 @@ namespace Inventory.UI
         public void Hide()
         {
             gameObject.SetActive(false);
+            canvasGroup.blocksRaycasts = false;
             ResetDraggedItem();
         }
 

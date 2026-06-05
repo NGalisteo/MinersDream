@@ -19,12 +19,15 @@ namespace Inventory
         [SerializeField]
         private PlacementSystem placementSystem;
 
+
+
         public List<InventoryItem> initialItems = new List<InventoryItem>();
 
         private void Start()
         {
             PrepareUI();
             PrepareInventoryData();
+
         }
 
         private void PrepareInventoryData()
