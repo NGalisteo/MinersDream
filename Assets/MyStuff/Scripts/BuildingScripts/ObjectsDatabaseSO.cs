@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Inventory.Model;
 
 [CreateAssetMenu] //lets you create one of these as a file
 
@@ -25,4 +26,7 @@ public class ObjectData
 
     [field: SerializeField]
     public Sprite sprite; //sprite for the inventory to display
+
+    [field: SerializeField]
+    public ItemSO inventoryItem {  get; private set; }
 }

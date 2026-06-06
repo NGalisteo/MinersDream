@@ -45,6 +45,26 @@ namespace Inventory.Model
             return quantity;
         }
 
+        public int UseItem(ItemSO item, int quantityToSubstract)
+        {
+            for (int i = 0; i < inventoryItems.Count; i++)
+            {
+                if (inventoryItems[i].item.ID == item.ID)
+                {
+                    inventoryItems[i] = inventoryItems[i]
+                    .ChangeQuantity(inventoryItems[i].quantity - 1);
+                    if (inventoryItems[i].quantity == 0)
+                    {
+                        InventoryItem.GetEmptyItem();
+                    }
+
+                    InformAboutChange();
+                    return quantityToSubstract;
+                }
+            }
+            return 0;
+        }
+
         private int AddItemToFirstFreeSlot(ItemSO item, int quantity)
         {
             InventoryItem newItem = new InventoryItem
@@ -77,9 +97,9 @@ namespace Inventory.Model
                 if (inventoryItems[i].item.ID == item.ID)
                 {
                     {
-                        int amountPossibleToTake = 
+                        int amountPossibleToTake =
                             inventoryItems[i].item.MaxStackSize - inventoryItems[i].quantity;
-                        if(quantity > amountPossibleToTake)
+                        if (quantity > amountPossibleToTake)
                         {
                             inventoryItems[i] = inventoryItems[i]
                                 .ChangeQuantity(inventoryItems[i].item.MaxStackSize);
@@ -95,7 +115,7 @@ namespace Inventory.Model
                     }
                 }
             }
-            while(quantity > 0 && IsInventoryFull() == false)
+            while (quantity > 0 && IsInventoryFull() == false)
             {
                 int newQuantity = Mathf.Clamp(quantity, 0, item.MaxStackSize);
                 quantity -= newQuantity;

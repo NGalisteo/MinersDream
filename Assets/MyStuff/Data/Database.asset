@@ -18,8 +18,10 @@ MonoBehaviour:
     <Size>k__BackingField: {x: 2, y: 3}
     <Prefab>k__BackingField: {fileID: 7822702122736691839, guid: 7037510dfe01fad44a4f780db35c8ad5, type: 3}
     sprite: {fileID: 21300000, guid: b66188ede290806469d4d1f3f25cdf14, type: 3}
+    <inventoryItem>k__BackingField: {fileID: 11400000, guid: 008a90c86b7c46045a02c95445fd1a51, type: 2}
   - <Name>k__BackingField: RubyMine
     <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 2, y: 3}
     <Prefab>k__BackingField: {fileID: 7822702122736691839, guid: 94749c028d71eea448aeb5d075326c7c, type: 3}
     sprite: {fileID: 21300000, guid: 25d8ed17cb990514aa1c06a35c01346d, type: 3}
+    <inventoryItem>k__BackingField: {fileID: 11400000, guid: 64700385ec695844abc30e53b7262a68, type: 2}

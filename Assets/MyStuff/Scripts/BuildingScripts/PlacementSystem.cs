@@ -1,3 +1,4 @@
+using Inventory.Model;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,9 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private ObjectPlacer objectPlacer; //this that physically spawns and destroys the gameobjects(items) in the scene.
 
+    [SerializeField]
+    InventorySO inventoryData;
+
     IBuildingState buildingState; //This is the state pattern interface, it holds placementstate and removingstate
 
 
@@ -49,7 +53,8 @@ public class PlacementSystem : MonoBehaviour
                                            preview,
                                            database,
                                            placedObjectsData,
-                                           objectPlacer);
+                                           objectPlacer,
+                                           inventoryData);
         inputManager.OnClicked += PlaceStructure; //basically this is where we subscribe to the events, its basically telling the input manager: when the player clicks, call this method.
         inputManager.OnExit += StopPlacement; //same but when the player presses escape
     } //Inputmanager doesnt know this exists, it just subscribes to the event thats in there, so it "hears" it and runs the method we assigned in for.
@@ -69,9 +74,10 @@ public class PlacementSystem : MonoBehaviour
 
     private void StopPlacement()
     {
+    
+        gridVisualization.SetActive(false); //hides the grid
         if (buildingState == null) //if nothing is active just do nothing, prevents crashes
             return;
-        gridVisualization.SetActive(false); //hides the grid
         buildingState.EndState(); //tells the current state to cleans itself up, like destroying the preview ghost for example.
         inputManager.OnClicked -= PlaceStructure; //this unsubscribes from the events, without this place structure would keep firing every click, even if i stopped placing.
         inputManager.OnExit -= StopPlacement; //same, remember to always unsubscribe when im done.
