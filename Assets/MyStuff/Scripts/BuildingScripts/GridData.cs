@@ -60,6 +60,12 @@ public class GridData
             return -1;
         return placedObjects[gridPosition].PlacedObjectIndex; //otherwhise, it looks up the cell in the dictionary and returns theplaced OBjectIndex and the ticket number that objectPlacer uses to find and destroy the right gameobject.
     }
+    internal int GetItemID(Vector3Int gridPosition) //this is used  by removingstate to get the index ticket of whatever is in a cell.
+    {
+        if (placedObjects.ContainsKey(gridPosition) == false) // if nothing is in a cell, return -1 as a signal to say nothing is found.
+            return -1;
+        return placedObjects[gridPosition].ID; //otherwhise, it looks up the cell in the dictionary and returns theplaced OBjectIndex and the ticket number that objectPlacer uses to find and destroy the right gameobject.
+    }
 
     internal void RemoveObjectAt(Vector3Int gridPosition) //removes an item from the dictionary.
     {

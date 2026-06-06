@@ -56,7 +56,6 @@ public class PlacementState : IBuildingState //implement the buildingstate contr
 
         int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition)); //spawns the real gameobject and returns the index ticket. converts the cell adress back to world position, so the item gets placed correctly
 
-
         //  GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ?
         //  floorData :
         //  furnitureData;

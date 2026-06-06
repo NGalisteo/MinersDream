@@ -1,3 +1,4 @@
+using Inventory.Model;
 using System;
 using UnityEngine;
 
@@ -8,16 +9,22 @@ public class RemovingState : IBuildingState //same contract as placementstate.
     PreviewSystem previewSystem;
     GridData placedObjectsData;
     ObjectPlacer objectPlacer;
+    ObjectsDatabaseSO database;
+    InventorySO inventoryData;
 
     public RemovingState(Grid grid, //no id needed because we're removing,and we dont care about the item, just where its placed.
                          PreviewSystem previewSystem,
                          GridData placedObjectsData,
-                         ObjectPlacer objectPlacer)
+                         ObjectPlacer objectPlacer,
+                         ObjectsDatabaseSO database,
+                         InventorySO inventoryData)
     {
         this.grid = grid;
         this.previewSystem = previewSystem;
         this.placedObjectsData = placedObjectsData;
         this.objectPlacer = objectPlacer;
+        this.database = database;
+        this.inventoryData = inventoryData;
 
         previewSystem.StartShowingRemovePreview(); //shows the 1x1 red cursos to give feedback we're removing.
     }
@@ -42,8 +49,12 @@ public class RemovingState : IBuildingState //same contract as placementstate.
         else
         {
             gameObjectIndex = selectedData.GetRepresentationIndex(gridPosition); //get the index ticket for the item at that cell
+            int objectID = selectedData.GetItemID(gridPosition);
+            int selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == objectID); //searches the database for the item that matches the id we passed in. for each item called data in the list, check if data.ID == ID
+
             if (gameObjectIndex == -1)
                 return;
+            inventoryData.AddItem(database.objectsData[selectedObjectIndex].inventoryItem, 1);
             selectedData.RemoveObjectAt(gridPosition); //clears the cells from gridData and the dictionary
             objectPlacer.RemoveObjectAt(gameObjectIndex); //destroys the actual gameobject.
 
