@@ -49,17 +49,17 @@ namespace Inventory.Model
         {
             for (int i = 0; i < inventoryItems.Count; i++)
             {
-                if (inventoryItems[i].item.ID == item.ID)
+                if (inventoryItems[i].isEmpty == false && inventoryItems[i].item.ID == item.ID)
                 {
                     inventoryItems[i] = inventoryItems[i]
                     .ChangeQuantity(inventoryItems[i].quantity - 1);
-                    if (inventoryItems[i].quantity == 0)
+                    if (inventoryItems[i].quantity <= 0)
                     {
-                        InventoryItem.GetEmptyItem();
+                        inventoryItems[i] = InventoryItem.GetEmptyItem();
                     }
 
                     InformAboutChange();
-                    return quantityToSubstract;
+                    return inventoryItems[i].quantity;
                 }
             }
             return 0;

@@ -11,6 +11,7 @@ public class PlacementState : IBuildingState //implement the buildingstate contr
     GridData placedObjectsData;
     ObjectPlacer objectPlacer;
     InventorySO inventoryData;
+    PlacementSystem placementSystem;
 
     public PlacementState(int iD,
                           Grid grid,
@@ -18,7 +19,8 @@ public class PlacementState : IBuildingState //implement the buildingstate contr
                           ObjectsDatabaseSO database,
                           GridData placedObjectsData,
                           ObjectPlacer objectPlacer,
-                          InventorySO inventoryData ) //we dont use serializefield cos we pass all the necesssary references
+                          InventorySO inventoryData,
+                          PlacementSystem placementSystem) //we dont use serializefield cos we pass all the necesssary references
     {
         ID = iD;
         this.grid = grid; //this grid refers to the variable, grid refers to the parameter of the constructor
@@ -27,6 +29,7 @@ public class PlacementState : IBuildingState //implement the buildingstate contr
         this.placedObjectsData = placedObjectsData;
         this.objectPlacer = objectPlacer;
         this.inventoryData = inventoryData;
+        this.placementSystem = placementSystem;
 
         selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID); //searches the database for the item that matches the id we passed in. for each item called data in the list, check if data.ID == ID
         if (selectedObjectIndex > -1) //returns the index, if it returns -1, is a notfound
@@ -62,10 +65,10 @@ public class PlacementState : IBuildingState //implement the buildingstate contr
             database.objectsData[selectedObjectIndex].ID,
             index);//registers the cells as occupied, storing the index ticket.
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false); // after the placing updates the color to red, this gives visual feedback  that the cell is occupied before moving the mouse and "updating" again.
-        Debug.Log(database.objectsData[selectedObjectIndex].inventoryItem);
-        Debug.Log(inventoryData);
-        inventoryData.UseItem(database.objectsData[selectedObjectIndex].inventoryItem, 1);
-        inventoryData.UseItem(database.objectsData[selectedObjectIndex].inventoryItem, 1);
+        if(inventoryData.UseItem(database.objectsData[selectedObjectIndex].inventoryItem, 1) == 0)
+        {
+            placementSystem.StopPlacement();
+        }
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex) //just to make onaction cleaner.

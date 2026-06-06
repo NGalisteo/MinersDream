@@ -32,6 +32,9 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     InventorySO inventoryData;
 
+
+
+
     IBuildingState buildingState; //This is the state pattern interface, it holds placementstate and removingstate
 
 
@@ -54,7 +57,8 @@ public class PlacementSystem : MonoBehaviour
                                            database,
                                            placedObjectsData,
                                            objectPlacer,
-                                           inventoryData);
+                                           inventoryData,
+                                           this);
         inputManager.OnClicked += PlaceStructure; //basically this is where we subscribe to the events, its basically telling the input manager: when the player clicks, call this method.
         inputManager.OnExit += StopPlacement; //same but when the player presses escape
     } //Inputmanager doesnt know this exists, it just subscribes to the event thats in there, so it "hears" it and runs the method we assigned in for.
@@ -72,7 +76,7 @@ public class PlacementSystem : MonoBehaviour
         buildingState.OnAction(gridPosition);// tells the current state to do whatever its supposed to, so if we're building it builds, if removing it removes lol
     }
 
-    private void StopPlacement()
+    public void StopPlacement()
     {
     
         gridVisualization.SetActive(false); //hides the grid
