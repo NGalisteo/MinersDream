@@ -1,4 +1,3 @@
-using Inventory.Model;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +5,6 @@ public class ObjectPlacer : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> placedGameObjects = new(); //list of every item PLACED in the scene
-    private InventorySO inventory;
 
     public int PlaceObject(GameObject prefab, Vector3 position)// places an object with the prefab and position we pass through.
     {

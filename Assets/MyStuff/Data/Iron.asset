@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a41b79317069684c8b64962bc3d0376, type: 3}
   m_Name: Iron
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  <IsStackable>k__BackingField: 1
-  <MaxStackSize>k__BackingField: 99
+  <ID>k__BackingField: 0
   <Name>k__BackingField: Iron Mine
   <Description>k__BackingField: An Iron mine lmfao
+  <Size>k__BackingField: {x: 2, y: 3}
+  <Prefab>k__BackingField: {fileID: 919132149155446097, guid: 656e42cf9598cbf4ea0c011cd39116b5, type: 3}
+  <Cost>k__BackingField: 0
+  <Tier>k__BackingField: 0
   <ItemImage>k__BackingField: {fileID: 21300000, guid: b66188ede290806469d4d1f3f25cdf14, type: 3}
-  <ObjectID>k__BackingField: 0
+  <ItemType>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 99
+  <IsStackable>k__BackingField: 1

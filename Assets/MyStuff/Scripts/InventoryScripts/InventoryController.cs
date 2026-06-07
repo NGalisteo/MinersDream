@@ -17,10 +17,15 @@ namespace Inventory
         [SerializeField]
         private PlacementSystem placementSystem;
 
-
+        private PlayerInputActions action; // for input actions, new input system
 
         public List<InventoryItem> initialItems = new List<InventoryItem>();
 
+
+        private void Awake()
+        {
+            action = new PlayerInputActions(); // just the enable for inputs, always put on awake
+        }
         private void Start()
         {
             PrepareUI();
@@ -34,7 +39,7 @@ namespace Inventory
             inventoryData.OnInventoryUpdated += UpdateInventoryUI;
             foreach (InventoryItem item in initialItems)
             {
-                if(item.isEmpty)
+                if (item.isEmpty)
                     continue;
                 inventoryData.AddItem(item);
             }
@@ -85,7 +90,7 @@ namespace Inventory
                 return;
             }
             ItemSO item = inventoryItem.item;
-        
+
             placementSystem.StartPlacement(item);
             inventoryUI.Hide();
 
@@ -93,7 +98,7 @@ namespace Inventory
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.I))//change this later to E, also change to new input actions, need reminder on how to do it.
+            if (action.Player.OpenInventory.WasPressedThisFrame())//change this later to E, also change to new input actions, need reminder on how to do it.
             {
                 if (inventoryUI.isActiveAndEnabled == false)
                 {
@@ -110,6 +115,15 @@ namespace Inventory
                     inventoryUI.Hide();
                 }
             }
+        }
+        private void OnEnable() //start listening for input
+        {
+            action.Enable();
+        }
+
+        private void OnDisable() //stops listening for input
+        {
+            action.Disable();
         }
     }
 }

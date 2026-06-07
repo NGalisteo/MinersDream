@@ -1022,7 +1022,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlacementSystem
   inputManager: {fileID: 2086790523}
   grid: {fileID: 725241884}
-  database: {fileID: 11400000, guid: 211df2db4b33df4429f08830d3e9c5cc, type: 2}
   gridVisualization: {fileID: 1853846080}
   preview: {fileID: 426131070}
   objectPlacer: {fileID: 1341279907}
