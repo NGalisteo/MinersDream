@@ -1,7 +1,5 @@
 using Inventory.Model;
-using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlacementSystem : MonoBehaviour
@@ -12,13 +10,10 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private Grid grid;
 
-    [SerializeField]
-    private ObjectsDatabaseSO database; //my item database
 
     [SerializeField]
     private GameObject gridVisualization; //visual grid i see on the ground when entering buildmode
 
-    //   private GridData floorData, furnitureData; //change this later
     private GridData placedObjectsData; //This tracks which grid cells are occupied, every time i place an item it registers it here
 
     [SerializeField]
@@ -41,20 +36,17 @@ public class PlacementSystem : MonoBehaviour
     void Start()
     {
         StopPlacement(); // makes sure the building mode is hidden and inactive
-      //  floorData = new();
-       // furnitureData = new();
         placedObjectsData = new(); //crates a fresh empty grid data trackers, to see which cells are occupied
     }
 
 
-    public void StartPlacement(int ID) //this is called by the ui buttons, it passes the id and starts placing the items with that ID
+    public void StartPlacement(ItemSO item) //this is called by the ui buttons, it passes the id and starts placing the items with that ID
     {
         StopPlacement(); //cleans every previous state, so if i was already placing something it resets and prevents bugs.
         gridVisualization.SetActive(true); //shows the grid on the ground.
-        buildingState = new PlacementState(ID, //creates a new placement state and passes everything it needs, so from now on it knows which item im placing and how to handle it
+        buildingState = new PlacementState(item, //creates a new placement state and passes everything it needs, so from now on it knows which item im placing and how to handle it
                                            grid,
                                            preview,
-                                           database,
                                            placedObjectsData,
                                            objectPlacer,
                                            inventoryData,
@@ -108,22 +100,9 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         gridVisualization.SetActive(true );
-        buildingState = new RemovingState(grid, preview, placedObjectsData, objectPlacer, database, inventoryData);
+        buildingState = new RemovingState(grid, preview, placedObjectsData, objectPlacer, inventoryData);
         inputManager.OnClicked += PlaceStructure; //still subscribes to the same events, clicking will now remove instead of place because removingstate handles onaction differently
         inputManager.OnExit += StopPlacement; //same for here
     }
-
-    
-
-    //private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
-    //{
-    //  //  GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? 
-    //  //      floorData : 
-    //  //     furnitureData;
-
-    //    return placedObjectsData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
-    //}
-
-   
 
 }

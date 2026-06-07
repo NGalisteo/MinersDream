@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Inventory.Model
@@ -45,7 +44,7 @@ namespace Inventory.Model
             return quantity;
         }
 
-        public int UseItem(ItemSO item, int quantityToSubstract)
+        public int RemoveItem(ItemSO item)
         {
             for (int i = 0; i < inventoryItems.Count; i++)
             {
@@ -86,7 +85,18 @@ namespace Inventory.Model
         }
 
         private bool IsInventoryFull()
-        => inventoryItems.Where(item => item.isEmpty).Any() == false;
+        {
+            foreach (var item in inventoryItems)
+            {
+                if(item.isEmpty)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+         
 
         private int AddStackableItem(ItemSO item, int quantity)
         {

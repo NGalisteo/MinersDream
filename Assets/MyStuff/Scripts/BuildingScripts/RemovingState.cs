@@ -4,26 +4,22 @@ using UnityEngine;
 
 public class RemovingState : IBuildingState //same contract as placementstate.
 {
-    private int gameObjectIndex = -1;
     Grid grid;
     PreviewSystem previewSystem;
     GridData placedObjectsData;
     ObjectPlacer objectPlacer;
-    ObjectsDatabaseSO database;
     InventorySO inventoryData;
 
     public RemovingState(Grid grid, //no id needed because we're removing,and we dont care about the item, just where its placed.
                          PreviewSystem previewSystem,
                          GridData placedObjectsData,
                          ObjectPlacer objectPlacer,
-                         ObjectsDatabaseSO database,
                          InventorySO inventoryData)
     {
         this.grid = grid;
         this.previewSystem = previewSystem;
         this.placedObjectsData = placedObjectsData;
         this.objectPlacer = objectPlacer;
-        this.database = database;
         this.inventoryData = inventoryData;
 
         previewSystem.StartShowingRemovePreview(); //shows the 1x1 red cursos to give feedback we're removing.
@@ -36,28 +32,13 @@ public class RemovingState : IBuildingState //same contract as placementstate.
 
     public void OnAction(Vector3Int gridPosition)
     {
-        GridData selectedData = null;
         if (placedObjectsData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false) //if the cell is occupied, that means theres something there
         {
-            selectedData = placedObjectsData;
-        }
-
-        if(selectedData == null) //if nothing is found, play a sound WIP
-        {
-            //sound
-        }
-        else
-        {
-            gameObjectIndex = selectedData.GetRepresentationIndex(gridPosition); //get the index ticket for the item at that cell
-            int objectID = selectedData.GetItemID(gridPosition);
-            int selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == objectID); //searches the database for the item that matches the id we passed in. for each item called data in the list, check if data.ID == ID
-
-            if (gameObjectIndex == -1)
-                return;
-            inventoryData.AddItem(database.objectsData[selectedObjectIndex].inventoryItem, 1);
-            selectedData.RemoveObjectAt(gridPosition); //clears the cells from gridData and the dictionary
+            int gameObjectIndex = placedObjectsData.GetObjectIndex(gridPosition); //get the index ticket for the item at that cell
+            ItemSO item = placedObjectsData.GetItemAt(gridPosition);
+            inventoryData.AddItem(item, 1);
+            placedObjectsData.RemoveObjectAt(gridPosition); //clears the cells from gridData and the dictionary
             objectPlacer.RemoveObjectAt(gameObjectIndex); //destroys the actual gameobject.
-
         }
         Vector3 cellPosition = grid.CellToWorld(gridPosition); //converts cell position to world position
         previewSystem.UpdatePosition(cellPosition, CheckIfSelectionIsValid(gridPosition)); //after removing, updates the cursor color, so its red again, because theres nothing now.

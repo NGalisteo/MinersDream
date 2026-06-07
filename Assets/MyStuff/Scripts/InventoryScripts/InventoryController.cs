@@ -1,7 +1,5 @@
 using Inventory.Model;
 using Inventory.UI;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,7 +53,7 @@ namespace Inventory
         private void PrepareUI()
         {
             inventoryUI.InitializeInventoryUI(inventoryData.Size);
-            inventoryUI.OnDescriptionRequested += HandleDescriptionRequest;
+            inventoryUI.OnDescriptionRequested += HandlePlacementCall;
             inventoryUI.OnSwapItems += HandleSwapItems;
             inventoryUI.OnStartDragging += HandleDragging;
             inventoryUI.OnItemActionRequested += HandleItemActionRequest;
@@ -78,7 +76,7 @@ namespace Inventory
             inventoryData.SwapItems(itemIndex_1, itemIndex_2);
         }
 
-        private void HandleDescriptionRequest(int itemIndex)
+        private void HandlePlacementCall(int itemIndex)
         {
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
             if (inventoryItem.isEmpty)
@@ -87,11 +85,8 @@ namespace Inventory
                 return;
             }
             ItemSO item = inventoryItem.item;
-            //inventoryUI.UpdateDescription(itemIndex, item.ItemImage,
-            //    item.name, item.Description);
-
         
-            placementSystem.StartPlacement(item.ObjectID);
+            placementSystem.StartPlacement(item);
             inventoryUI.Hide();
 
         }

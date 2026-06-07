@@ -1,3 +1,4 @@
+using Inventory.Model;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,11 +10,11 @@ public class GridData
                                                                  //its way faster than a list.
     public void AddObjectAt(Vector3Int gridPosition,
                             Vector2Int objectSize,
-                            int ID,
+                            ItemSO item,
                             int placedObjectIndex) //this registers a placed item in the dictionary. it takes the grid position it was placed, the items size, its id and the index ticket from objectplacer
     {
         List<Vector3Int> positionToOccupy = CalculatePositions(gridPosition, objectSize); //figures out every cell that the item occupies
-        PlacementData data = new PlacementData(positionToOccupy, ID, placedObjectIndex); //creates a data package containing all the information about this item we placed
+        PlacementData data = new PlacementData(positionToOccupy, placedObjectIndex, item ); //creates a data package containing all the information about this item we placed
         foreach (var pos in positionToOccupy) //loops through every cell the item occupies and registers the same data object at each cell. for example a 2x2 item registers the same data to 4 cells.
         {
             if (placedObjects.ContainsKey(pos)) //if a cell has already any entry for this key, and sometihng triess to register it again, crashes with a message. for debugging.
@@ -54,22 +55,22 @@ public class GridData
         return true;
     } //this is called every frame in update to color the preview ghost red or white, and again in Onaction before placing.
 
-    internal int GetRepresentationIndex(Vector3Int gridPosition) //this is used  by removingstate to get the index ticket of whatever is in a cell.
+    internal int GetObjectIndex(Vector3Int gridPosition) //this is used  by removingstate to get the index ticket of whatever is in a cell.
     {
         if (placedObjects.ContainsKey(gridPosition) == false) // if nothing is in a cell, return -1 as a signal to say nothing is found.
             return -1;
-        return placedObjects[gridPosition].PlacedObjectIndex; //otherwhise, it looks up the cell in the dictionary and returns theplaced OBjectIndex and the ticket number that objectPlacer uses to find and destroy the right gameobject.
+        return placedObjects[gridPosition].ObjectIndex; //otherwhise, it looks up the cell in the dictionary and returns theplaced OBjectIndex and the ticket number that objectPlacer uses to find and destroy the right gameobject.
     }
-    internal int GetItemID(Vector3Int gridPosition) //this is used  by removingstate to get the index ticket of whatever is in a cell.
+    internal ItemSO GetItemAt(Vector3Int gridPosition) //this is used  by removingstate to get the index ticket of whatever is in a cell.
     {
         if (placedObjects.ContainsKey(gridPosition) == false) // if nothing is in a cell, return -1 as a signal to say nothing is found.
-            return -1;
-        return placedObjects[gridPosition].ID; //otherwhise, it looks up the cell in the dictionary and returns theplaced OBjectIndex and the ticket number that objectPlacer uses to find and destroy the right gameobject.
+            return null;
+        return placedObjects[gridPosition].Item; //otherwhise, it looks up the cell in the dictionary and returns theplaced OBjectIndex and the ticket number that objectPlacer uses to find and destroy the right gameobject.
     }
 
     internal void RemoveObjectAt(Vector3Int gridPosition) //removes an item from the dictionary.
     {
-        foreach (var pos in placedObjects[gridPosition].occupiedPositions) // looks up the placementdata at a clicked cell, gets the full list of occupied positions, because when im removing a multi cell item, we need to clear all the cells not just the one i clicked.
+        foreach (var pos in placedObjects[gridPosition].OccupiedCells) // looks up the placementdata at a clicked cell, gets the full list of occupied positions, because when im removing a multi cell item, we need to clear all the cells not just the one i clicked.
         {
             placedObjects.Remove(pos); //removes it from the dictionary
         }
@@ -78,15 +79,15 @@ public class GridData
 
 public class PlacementData //data package stored at each occupied cell.
 {
-    public List<Vector3Int> occupiedPositions; //full list of cells this item takes up, we need it for when removing an item.
-    public int ID { get; private set; } //the id of which item is in a cell, useful later if we want to show info when hovering or something.
-    public int PlacedObjectIndex { get; private set; } //ticket number pointing to the real gameobject in the objectPlacer List.
+    public List<Vector3Int> OccupiedCells; //full list of cells this item takes up, we need it for when removing an item.
+    public int ObjectIndex { get; private set; } //ticket number pointing to the real gameobject in the objectPlacer List.
 
-    public PlacementData(List<Vector3Int> occupiedPositions, int iD, int placedObjectIndex)
+    public ItemSO Item;
+    public PlacementData(List<Vector3Int> occupiedCells, int objectIndex, ItemSO item)
     {
-        this.occupiedPositions = occupiedPositions;
-        ID = iD;
-        PlacedObjectIndex = placedObjectIndex;
+        this.OccupiedCells = occupiedCells;
+        this.ObjectIndex = objectIndex;
+        this.Item = item;
     }
 
     /*
