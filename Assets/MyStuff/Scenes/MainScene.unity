@@ -2732,8 +2732,16 @@ PrefabInstance:
       value: CoursorindicatorParent
       objectReference: {fileID: 0}
     - target: {fileID: 3952697397410380797, guid: 108f1c32e9c0921458f7048eb739b252, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952697397410380797, guid: 108f1c32e9c0921458f7048eb739b252, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952697397410380797, guid: 108f1c32e9c0921458f7048eb739b252, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4217279997386698761, guid: 108f1c32e9c0921458f7048eb739b252, type: 3}
       propertyPath: m_LocalPosition.x

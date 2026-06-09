@@ -4,111 +4,122 @@ using UnityEngine;
 public class PreviewSystem : MonoBehaviour
 {
     [SerializeField]
-    private float previewYOffset = 0.06f; //to avoid z fighting, makes the preview float slightly above groound.
+    private float previewYOffset = 0.06f;
 
     [SerializeField]
-    private GameObject cellIndicator; //visual highlight on the ground
-    private GameObject previewObject; //ghost copy of the object of the object we're about to place, created at runtime.
+    private GameObject cellIndicator;
+    private GameObject previewObject;
 
     [SerializeField]
-    private Material previewMaterialPrefab; //transparent material i crated in assets
-    private Material previewMaterialInstance; //runtime copy of it, so we can modify the runtime one and not the normal one, since if we do that it would modify the object permanently.
+    private Material previewMaterialPrefab;
+    private Material previewMaterialInstance;
 
-    private Renderer cellIndicatorRenderer; //stores a reference to cellindicator renderer components so we can change the color without calling getcomponent every frame.
-
+    private Renderer cellIndicatorRenderer;
+    private Vector2Int currentSize;
 
     private void Start()
     {
-        previewMaterialInstance = new Material(previewMaterialPrefab); //creates the runtime copy of the material.
-        cellIndicator.SetActive(false);// hdies the indicator at the start, since it should be only active during build mode.
-        cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>(); //finds the renderer component inside cellIndicator and stores it
+        previewMaterialInstance = new Material(previewMaterialPrefab);
+        cellIndicator.SetActive(false);
+        cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>();
     }
 
-    public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size) //called by placementstate when we enter build mode, 
+    public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
-        previewObject = Instantiate(prefab); //spawns the ghost
-        PreparePreview(previewObject);//applies transparent material
-        PrepareCursor(size); //resizes the cell indicator to match item size
-        cellIndicator.SetActive(true); //shows the cell indicator
+        currentSize = size;
+        previewObject = Instantiate(prefab);
+        PreparePreview(previewObject);
+        PrepareCursor(size);
+        cellIndicator.SetActive(true);
     }
 
-    private void PrepareCursor(Vector2Int size) //resizes the cell indicator to match the items size.
+    private void PrepareCursor(Vector2Int size)
     {
-        if(size.x > 0 || size.y > 0)
+        if (size.x > 0 || size.y > 0)
         {
-            cellIndicator.transform.localScale = new Vector3(size.x, 1, size.y); //scales the indicator on x and z to match the items size, we dont scale vertically so Y is 1.
-            cellIndicatorRenderer.material.mainTextureScale = size;//scales the texture on the indictor to tile correctly. without this the texture would just stretch
+            cellIndicator.transform.localScale = new Vector3(size.x, 1, size.y);
+            cellIndicatorRenderer.material.mainTextureScale = size;
         }
     }
 
-    private void PreparePreview(GameObject previewObject) //replaces every material on the ghost preview object with the transparent preview material.
+    private void PreparePreview(GameObject previewObject)
     {
-        Renderer[] renderers = previewObject.GetComponentsInChildren<Renderer>(); //gets every renderer on the object and all its children.
+        Renderer[] renderers = previewObject.GetComponentsInChildren<Renderer>();
         foreach (Renderer renderer in renderers)
         {
-            Material[] materials = renderer.materials; //returns a copy of the materials array, not a direct reference
+            Material[] materials = renderer.materials;
             for (int i = 0; i < materials.Length; i++)
-            {
-                materials[i] = previewMaterialInstance; //we modify the copy with the transparent materials.
-            }
-            renderer.materials = materials; //we reassign it back and apply the materials
+                materials[i] = previewMaterialInstance;
+            renderer.materials = materials;
         }
     }
 
-    public void StopShowingPreview() 
+    public void StopShowingPreview()
     {
-        cellIndicator.SetActive(false); //hides the cell indicator
-        if(previewObject != null )
-            Destroy(previewObject); //destroys ghost object
+        cellIndicator.SetActive(false);
+        if (previewObject != null)
+            Destroy(previewObject);
     }
 
-    public void UpdatePosition(Vector3 position, bool validity) //called every time the mouse moves to a new cell
+    public void UpdatePosition(Vector3 position, bool validity)
     {
-        if(previewObject != null)
+        if (previewObject != null)
         {
-            MovePreview(position); //moves the preview to the new pos
-            ApplyFeedbackToPreview(validity);//updates colors
+            MovePreview(position);
+            ApplyFeedbackToPreview(validity);
         }
-
-        MoveCursor(position); //moves the cell indicator
-        ApplyFeedbackToCursor(validity); //updates if valid and colors
+        MoveCursor(position);
+        ApplyFeedbackToCursor(validity);
     }
 
     private void ApplyFeedbackToPreview(bool validity)
     {
         Color c = validity ? Color.white : Color.red;
-
         c.a = 0.5f;
         previewMaterialInstance.color = c;
     }
 
     private void ApplyFeedbackToCursor(bool validity)
     {
-        Color c = validity ? Color.white : Color.red; //if validity is true use white, if not, red.
-
-        c.a = 0.5f; //sets alpha to 50%
-        cellIndicatorRenderer.material.color = c; //Since all sub-meshes share the same previewMaterialInstance, changing it once updates all of them simultaneously — that's the payoff of using a shared material instance.
+        Color c = validity ? Color.white : Color.red;
+        c.a = 0.5f;
+        cellIndicatorRenderer.material.color = c;
     }
 
+    // Cursor stays at corner — its prefab has a (0.5, 0, 0.5) offset on the child that auto-scales
     private void MoveCursor(Vector3 position)
     {
-        cellIndicator.transform.position = position; //moves the cursor to the new pos.
+        cellIndicator.transform.position = new Vector3(
+            position.x + currentSize.x / 2f,
+            position.y,
+            position.z + currentSize.y / 2f
+        );
     }
 
+    // Ghost goes to footprint center — matches where real item spawns
     private void MovePreview(Vector3 position)
     {
-        previewObject.transform.position = new Vector3(position.x,
+        previewObject.transform.position = new Vector3(
+            position.x + currentSize.x / 2f,
             position.y + previewYOffset,
-            position.z); //adds the previewYoffset to Y so the ghost floats above grounds preventing zfighting, also moves the preview to the new pos.
-        /*
-         why not just do previewObject.transform.position = position and add the offset separately? Because position is a Vector3 and you can't just do position.y += previewYOffset directly — Vector3 components are read only when accessed that way. So instead a brand new Vector3 is constructed with the offset already baked into Y, and that gets assigned all at once.
-         */
+            position.z + currentSize.y / 2f
+        );
     }
 
-    internal void StartShowingRemovePreview() //called by removingstate. no ghost created cos its removing
+    internal void StartShowingRemovePreview()
     {
-        cellIndicator.SetActive(true); //shows cell indicator
-        PrepareCursor(Vector2Int.one); //makes the cursor always 1x1 during remove mode
-        ApplyFeedbackToCursor(false); //starts it red immediately.
+        cellIndicator.SetActive(true);
+        PrepareCursor(Vector2Int.one);
+        ApplyFeedbackToCursor(false);
+    }
+
+    // Helper used by PlacementState so real item spawns at same place as ghost
+    public static Vector3 GetFootprintCenter(Vector3 cornerPosition, Vector2Int size)
+    {
+        return new Vector3(
+            cornerPosition.x + size.x / 2f,
+            cornerPosition.y,
+            cornerPosition.z + size.y / 2f
+        );
     }
 }

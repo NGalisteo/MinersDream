@@ -2,7 +2,9 @@
 
 public interface IBuildingState
 {
-    void EndState(); //clean up when leaving the state
-    void OnAction(Vector3Int gridPosition); //what happens when the player clicks
-    void UpdateState(Vector3Int gridPosition); //what happens every frame the mouse move.
+    void EndState();
+    void OnAction(Vector3Int gridPosition);
+    void UpdateState(Vector3Int gridPosition);
+    // Offset to apply to the mouse position before grid snapping so the cursor sits at the CENTER of the item being placed
+    Vector2Int GetSize();
 }

@@ -1,7 +1,7 @@
 using Inventory.Model;
 using UnityEngine;
 
-public class PlacementState : IBuildingState //implement the buildingstate contract interface
+public class PlacementState : IBuildingState
 {
     ItemSO item;
     Grid grid;
@@ -17,56 +17,50 @@ public class PlacementState : IBuildingState //implement the buildingstate contr
                           GridData placedObjectsData,
                           ObjectPlacer objectPlacer,
                           InventorySO inventoryData,
-                          PlacementSystem placementSystem) //we dont use serializefield cos we pass all the necesssary references
+                          PlacementSystem placementSystem)
     {
         this.item = item;
-        this.grid = grid; //this grid refers to the variable, grid refers to the parameter of the constructor
+        this.grid = grid;
         this.previewSystem = previewSystem;
         this.placedObjectsData = placedObjectsData;
         this.objectPlacer = objectPlacer;
         this.inventoryData = inventoryData;
         this.placementSystem = placementSystem;
 
-
-            previewSystem.StartShowingPlacementPreview(
-                this.item.Prefab, //we pass the prefab
-                this.item.Size); //we pass the size to resize the cursor
+        previewSystem.StartShowingPlacementPreview(this.item.Prefab, this.item.Size);
     }
 
-    public void EndState() //required by the interface, when the placement mode ends,  destroy the ghost preview.
+    public void EndState()
     {
         previewSystem.StopShowingPreview();
     }
 
-    public void OnAction(Vector3Int gridPosition) //required by the interface, this runs when the player clicks
+    public Vector2Int GetSize() => item.Size;
+
+    public void OnAction(Vector3Int gridPosition)
     {
-        bool placementValidity = CheckPlacementValidity(gridPosition); //if the cell is occupied, return early and dont do anything
+        bool placementValidity = CheckPlacementValidity(gridPosition);
         if (!placementValidity)
             return;
 
-        int index = objectPlacer.PlaceObject(item.Prefab, grid.CellToWorld(gridPosition)); //spawns the real gameobject and returns the index ticket. converts the cell adress back to world position, so the item gets placed correctly
+        Vector3 spawnPosition = PreviewSystem.GetFootprintCenter(grid.CellToWorld(gridPosition), item.Size);
+        int index = objectPlacer.PlaceObject(item.Prefab, spawnPosition);
 
-        placedObjectsData.AddObjectAt(gridPosition,
-            item.Size,
-            item,
-            index);//registers the cells as occupied, storing the index ticket.
-        previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false); // after the placing updates the color to red, this gives visual feedback  that the cell is occupied before moving the mouse and "updating" again.
-        if(inventoryData.RemoveItem(item) == 0)
-        {
+        placedObjectsData.AddObjectAt(gridPosition, item.Size, item, index);
+        previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
+
+        if (inventoryData.RemoveItem(item) == 0)
             placementSystem.StopPlacement();
-        }
     }
 
-    private bool CheckPlacementValidity(Vector3Int gridPosition) //just to make onaction cleaner.
+    private bool CheckPlacementValidity(Vector3Int gridPosition)
     {
-
-        return placedObjectsData.CanPlaceObjectAt(gridPosition, item.Size); //instead of this long line in onaction, we put it here so the purpose and code is cleaner
+        return placedObjectsData.CanPlaceObjectAt(gridPosition, item.Size);
     }
 
-    public void UpdateState(Vector3Int gridPosition) //required by the interface, called every frame when the mouse moves to a new cell.
+    public void UpdateState(Vector3Int gridPosition)
     {
-        bool placementValidity = CheckPlacementValidity(gridPosition); //checks validity
-
-        previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), placementValidity); //updates the ghost color and the position of the cursor.
+        bool placementValidity = CheckPlacementValidity(gridPosition);
+        previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), placementValidity);
     }
 }

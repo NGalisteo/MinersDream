@@ -1,8 +1,7 @@
 using Inventory.Model;
-using System;
 using UnityEngine;
 
-public class RemovingState : IBuildingState //same contract as placementstate.
+public class RemovingState : IBuildingState
 {
     Grid grid;
     PreviewSystem previewSystem;
@@ -10,7 +9,7 @@ public class RemovingState : IBuildingState //same contract as placementstate.
     ObjectPlacer objectPlacer;
     InventorySO inventoryData;
 
-    public RemovingState(Grid grid, //no id needed because we're removing,and we dont care about the item, just where its placed.
+    public RemovingState(Grid grid,
                          PreviewSystem previewSystem,
                          GridData placedObjectsData,
                          ObjectPlacer objectPlacer,
@@ -21,35 +20,36 @@ public class RemovingState : IBuildingState //same contract as placementstate.
         this.placedObjectsData = placedObjectsData;
         this.objectPlacer = objectPlacer;
         this.inventoryData = inventoryData;
-
-        previewSystem.StartShowingRemovePreview(); //shows the 1x1 red cursos to give feedback we're removing.
+        previewSystem.StartShowingRemovePreview();
     }
 
-    public void EndState() //required by the interface
+    public void EndState()
     {
-        previewSystem.StopShowingPreview(); //stops showing the preview, stops build mode?
+        previewSystem.StopShowingPreview();
     }
+
+    public Vector2Int GetSize() => Vector2Int.one;
 
     public void OnAction(Vector3Int gridPosition)
     {
-        if (placedObjectsData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false) //if the cell is occupied, that means theres something there
+        if (placedObjectsData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false)
         {
-            int gameObjectIndex = placedObjectsData.GetObjectIndex(gridPosition); //get the index ticket for the item at that cell
+            int gameObjectIndex = placedObjectsData.GetObjectIndex(gridPosition);
             ItemSO item = placedObjectsData.GetItemAt(gridPosition);
             inventoryData.AddItem(item, 1);
-            placedObjectsData.RemoveObjectAt(gridPosition); //clears the cells from gridData and the dictionary
-            objectPlacer.RemoveObjectAt(gameObjectIndex); //destroys the actual gameobject.
+            placedObjectsData.RemoveObjectAt(gridPosition);
+            objectPlacer.RemoveObjectAt(gameObjectIndex);
         }
-        Vector3 cellPosition = grid.CellToWorld(gridPosition); //converts cell position to world position
-        previewSystem.UpdatePosition(cellPosition, CheckIfSelectionIsValid(gridPosition)); //after removing, updates the cursor color, so its red again, because theres nothing now.
+        Vector3 cellPosition = grid.CellToWorld(gridPosition);
+        previewSystem.UpdatePosition(cellPosition, CheckIfSelectionIsValid(gridPosition));
     }
 
-    private bool CheckIfSelectionIsValid(Vector3Int gridPosition) //returns true if something is at the cell, cos its valid to remove.
+    private bool CheckIfSelectionIsValid(Vector3Int gridPosition)
     {
-        return !(placedObjectsData.CanPlaceObjectAt(gridPosition, Vector2Int.one)); //we use the method backwards lol
+        return !(placedObjectsData.CanPlaceObjectAt(gridPosition, Vector2Int.one));
     }
 
-    public void UpdateState(Vector3Int gridPosition) //updates every time the mouse moves, cursor is white if theres something to remove, turns red if theres nothing to remove.
+    public void UpdateState(Vector3Int gridPosition)
     {
         bool validity = CheckIfSelectionIsValid(gridPosition);
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), validity);
