@@ -21,7 +21,7 @@ public class PlacementSystem : MonoBehaviour
     private ObjectPlacer objectPlacer;
 
     [SerializeField]
-    InventorySO inventoryData;
+    PlayerInventory inventoryData;
 
     IBuildingState buildingState;
 
@@ -77,7 +77,7 @@ public class PlacementSystem : MonoBehaviour
     // Returns the grid cell offset so the cursor sits at the CENTER of the item footprint, not the corner
     private Vector3Int GetCenteredGridPosition()
     {
-        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+        Vector3 mousePosition = inputManager.GetMouseWorldPosition();
         Vector2Int size = buildingState.GetSize();
         // Shift mouse position back by half size so the corner cell lands centered under mouse
         Vector3 offsetMouse = new Vector3(

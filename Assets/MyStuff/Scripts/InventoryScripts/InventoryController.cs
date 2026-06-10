@@ -12,14 +12,14 @@ namespace Inventory
         private UIInventoryPage inventoryUI;
 
         [SerializeField]
-        private InventorySO inventoryData;
+        private PlayerInventory inventoryData;
 
         [SerializeField]
         private PlacementSystem placementSystem;
 
         private PlayerInputActions action; // for input actions, new input system
 
-        public List<InventoryItem> initialItems = new List<InventoryItem>();
+        public List<InventorySlot> initialItems = new List<InventorySlot>();
 
 
         private void Awake()
@@ -37,7 +37,7 @@ namespace Inventory
         {
             inventoryData.Initialize();
             inventoryData.OnInventoryUpdated += UpdateInventoryUI;
-            foreach (InventoryItem item in initialItems)
+            foreach (InventorySlot item in initialItems)
             {
                 if (item.isEmpty)
                     continue;
@@ -45,7 +45,7 @@ namespace Inventory
             }
         }
 
-        private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
+        private void UpdateInventoryUI(Dictionary<int, InventorySlot> inventoryState)
         {
             inventoryUI.ResetAllItems();
             foreach (var item in inventoryState)
@@ -70,7 +70,7 @@ namespace Inventory
 
         private void HandleDragging(int itemIndex)
         {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+            InventorySlot inventoryItem = inventoryData.GetItemAt(itemIndex);
             if (inventoryItem.isEmpty)
                 return;
             inventoryUI.CreateDraggedItem(inventoryItem.item.ItemImage, inventoryItem.quantity);
@@ -83,7 +83,7 @@ namespace Inventory
 
         private void HandlePlacementCall(int itemIndex)
         {
-            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+            InventorySlot inventoryItem = inventoryData.GetItemAt(itemIndex);
             if (inventoryItem.isEmpty)
             {
                 inventoryUI.ResetSelection();

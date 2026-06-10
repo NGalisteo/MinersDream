@@ -45,9 +45,11 @@ public class InputManager : MonoBehaviour
     }
 
     public bool IsPointerOverUI()
-        => EventSystem.current.IsPointerOverGameObject(); //the arrow is just a short for return, this checks if the mouse is over a ui element, like the button to summon an iron mine
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
 
-    public Vector3 GetSelectedMapPosition()
+    public Vector3 GetMouseWorldPosition()
     {
         Vector2 mousePos = action.BuildingSystem.CursorPosition.ReadValue<Vector2>(); //reads the current mouse 2d screen position in pixels, like (676, 69)
         Ray ray = sceneCamera.ScreenPointToRay(mousePos); //the camera shoots a raycast, like a lazer pointer.

@@ -8,7 +8,7 @@ public class PlacementState : IBuildingState
     PreviewSystem previewSystem;
     GridData placedObjectsData;
     ObjectPlacer objectPlacer;
-    InventorySO inventoryData;
+    PlayerInventory inventoryData;
     PlacementSystem placementSystem;
 
     public PlacementState(ItemSO item,
@@ -16,7 +16,7 @@ public class PlacementState : IBuildingState
                           PreviewSystem previewSystem,
                           GridData placedObjectsData,
                           ObjectPlacer objectPlacer,
-                          InventorySO inventoryData,
+                          PlayerInventory inventoryData,
                           PlacementSystem placementSystem)
     {
         this.item = item;

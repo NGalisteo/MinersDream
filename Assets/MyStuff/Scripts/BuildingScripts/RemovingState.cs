@@ -7,13 +7,13 @@ public class RemovingState : IBuildingState
     PreviewSystem previewSystem;
     GridData placedObjectsData;
     ObjectPlacer objectPlacer;
-    InventorySO inventoryData;
+    PlayerInventory inventoryData;
 
     public RemovingState(Grid grid,
                          PreviewSystem previewSystem,
                          GridData placedObjectsData,
                          ObjectPlacer objectPlacer,
-                         InventorySO inventoryData)
+                         PlayerInventory inventoryData)
     {
         this.grid = grid;
         this.previewSystem = previewSystem;
