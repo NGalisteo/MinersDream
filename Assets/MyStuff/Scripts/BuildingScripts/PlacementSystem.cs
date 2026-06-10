@@ -49,6 +49,14 @@ public class PlacementSystem : MonoBehaviour
         buildingState.OnAction(gridPosition);
     }
 
+    public bool IsBuilding()
+    {
+        if(buildingState != null)
+        {
+            return true;
+        }
+        return false;
+    }
     public void StopPlacement()
     {
         gridVisualization.SetActive(false);

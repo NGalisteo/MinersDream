@@ -49,6 +49,10 @@ public class InputManager : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject();
     }
 
+    public Vector2 GetMousePosition()
+    {
+        return action.BuildingSystem.CursorPosition.ReadValue<Vector2>();
+    }
     public Vector3 GetMouseWorldPosition()
     {
         Vector2 mousePos = action.BuildingSystem.CursorPosition.ReadValue<Vector2>(); //reads the current mouse 2d screen position in pixels, like (676, 69)

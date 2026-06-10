@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4225889430426197000}
   - component: {fileID: 2697211876091646240}
-  m_Layer: 0
+  - component: {fileID: 7831307922366641493}
+  m_Layer: 6
   m_Name: RubyParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,6 +49,27 @@ MonoBehaviour:
   item: {fileID: 0}
   gridPosition: {x: 0, y: 0, z: 0}
   trackingNumber: 0
+--- !u!65 &7831307922366641493
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7822702122736691839}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0.5}
 --- !u!1001 &4760680441507106974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56,6 +78,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4225889430426197000}
     m_Modifications:
+    - target: {fileID: -8940741299994791079, guid: 34fcbc1a97a5457479a186de81def177, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 34fcbc1a97a5457479a186de81def177, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -104,9 +130,25 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f743b5a4afdd385458a2e55c8a39c346, type: 2}
+    - target: {fileID: -2102064411131088495, guid: 34fcbc1a97a5457479a186de81def177, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 140289310476283376, guid: 34fcbc1a97a5457479a186de81def177, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 916869343952605473, guid: 34fcbc1a97a5457479a186de81def177, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 34fcbc1a97a5457479a186de81def177, type: 3}
       propertyPath: m_Name
       value: RubyMine
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34fcbc1a97a5457479a186de81def177, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5717381401784558247, guid: 34fcbc1a97a5457479a186de81def177, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
