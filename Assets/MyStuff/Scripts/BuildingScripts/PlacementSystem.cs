@@ -10,7 +10,7 @@ public class PlacementSystem : MonoBehaviour
 
     [SerializeField]
     private GameObject gridVisualization;
-    private GridData placedObjectsData;
+    private CellContent placedObjectsData;
 
     [SerializeField]
     private PreviewSystem preview;
@@ -18,7 +18,7 @@ public class PlacementSystem : MonoBehaviour
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
 
     [SerializeField]
-    private ObjectPlacer objectPlacer;
+    private PlacedObjectTracker objectPlacer;
 
     [SerializeField]
     PlayerInventory inventoryData;

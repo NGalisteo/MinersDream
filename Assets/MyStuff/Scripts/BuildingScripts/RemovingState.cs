@@ -5,14 +5,14 @@ public class RemovingState : IBuildingState
 {
     Grid grid;
     PreviewSystem previewSystem;
-    GridData placedObjectsData;
-    ObjectPlacer objectPlacer;
+    CellContent placedObjectsData;
+    PlacedObjectTracker objectPlacer;
     PlayerInventory inventoryData;
 
     public RemovingState(Grid grid,
                          PreviewSystem previewSystem,
-                         GridData placedObjectsData,
-                         ObjectPlacer objectPlacer,
+                         CellContent placedObjectsData,
+                         PlacedObjectTracker objectPlacer,
                          PlayerInventory inventoryData)
     {
         this.grid = grid;

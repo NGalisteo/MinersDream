@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4225889430426197000}
+  - component: {fileID: 4135889378952963536}
   m_Layer: 0
   m_Name: IronParent
   m_TagString: Untagged
@@ -32,6 +33,21 @@ Transform:
   - {fileID: 581769401736073460}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4135889378952963536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7822702122736691839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85bc3a95f4ade9b45a22d6106decfb5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlacedItemInfo
+  item: {fileID: 0}
+  gridPosition: {x: 0, y: 0, z: 0}
+  trackingNumber: 0
 --- !u!1001 &1123759489440741151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42,7 +58,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 656e42cf9598cbf4ea0c011cd39116b5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 656e42cf9598cbf4ea0c011cd39116b5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -50,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 656e42cf9598cbf4ea0c011cd39116b5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 656e42cf9598cbf4ea0c011cd39116b5, type: 3}
       propertyPath: m_LocalRotation.w

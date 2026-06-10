@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPlacer : MonoBehaviour
+public class PlacedObjectTracker : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> placedGameObjects = new(); //list of every item PLACED in the scene
 
-    public int PlaceObject(GameObject prefab, Vector3 position)// places an object with the prefab and position we pass through.
+    public GameObject PlaceObject(GameObject prefab, Vector3 position)// places an object with the prefab and position we pass through.
     {
         GameObject newObject = Instantiate(prefab); //spawns a copy of the prefab in the scene
         newObject.transform.position = position; //moves it to the correct grid position
+        PlacedItemInfo placedItemInfo = newObject.GetComponent<PlacedItemInfo>();
         placedGameObjects.Add(newObject);//adds it to the list so we get track of every item placed in the scene
-        return placedGameObjects.Count - 1;//returns the index of the item we just added. If the list had 3 items and we just added a 4th, Count is 4 so we return 3 (because lists start at index 0). 
+        placedItemInfo.trackingNumber = placedGameObjects.Count - 1;
+        return newObject;//returns the index of the item we just added. If the list had 3 items and we just added a 4th, Count is 4 so we return 3 (because lists start at index 0). 
     }
 
     /*

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridData
+public class CellContent
 {
-    Dictionary<Vector3Int, PlacementData> placedObjects = new(); //its like a real dictionary, you look something up by a key and get something back, in this case a value
+    Dictionary<Vector3Int, PlacedItem> placedObjects = new(); //its like a real dictionary, you look something up by a key and get something back, in this case a value
                                                                  // in this case, the key is the vector3int, the cell grid address like 2, 0, 1. and the value, what you get back is the placementdata, basically everything thats placed in that cell.
                                                                  //its way faster than a list.
     public void AddObjectAt(Vector3Int gridPosition,
@@ -14,7 +14,7 @@ public class GridData
                             int placedObjectIndex) //this registers a placed item in the dictionary. it takes the grid position it was placed, the items size, its id and the index ticket from objectplacer
     {
         List<Vector3Int> positionToOccupy = CalculatePositions(gridPosition, objectSize); //figures out every cell that the item occupies
-        PlacementData data = new PlacementData(positionToOccupy, placedObjectIndex, item ); //creates a data package containing all the information about this item we placed
+        PlacedItem data = new PlacedItem(positionToOccupy, placedObjectIndex, item ); //creates a data package containing all the information about this item we placed
         foreach (var pos in positionToOccupy) //loops through every cell the item occupies and registers the same data object at each cell. for example a 2x2 item registers the same data to 4 cells.
         {
             if (placedObjects.ContainsKey(pos)) //if a cell has already any entry for this key, and sometihng triess to register it again, crashes with a message. for debugging.
@@ -59,7 +59,7 @@ public class GridData
     {
         if (placedObjects.ContainsKey(gridPosition) == false) // if nothing is in a cell, return -1 as a signal to say nothing is found.
             return -1;
-        return placedObjects[gridPosition].ObjectIndex; //otherwhise, it looks up the cell in the dictionary and returns theplaced OBjectIndex and the ticket number that objectPlacer uses to find and destroy the right gameobject.
+        return placedObjects[gridPosition].PlacedObjectIndex; //otherwhise, it looks up the cell in the dictionary and returns theplaced OBjectIndex and the ticket number that objectPlacer uses to find and destroy the right gameobject.
     }
     internal ItemSO GetItemAt(Vector3Int gridPosition) //this is used  by removingstate to get the index ticket of whatever is in a cell.
     {
@@ -77,16 +77,16 @@ public class GridData
     }
 }
 
-public class PlacementData //data package stored at each occupied cell.
+public class PlacedItem //data package stored at each occupied cell.
 {
     public List<Vector3Int> OccupiedCells; //full list of cells this item takes up, we need it for when removing an item.
-    public int ObjectIndex { get; private set; } //ticket number pointing to the real gameobject in the objectPlacer List.
+    public int PlacedObjectIndex { get; private set; } //ticket number pointing to the real gameobject in the objectPlacer List.
 
     public ItemSO Item;
-    public PlacementData(List<Vector3Int> occupiedCells, int objectIndex, ItemSO item)
+    public PlacedItem(List<Vector3Int> occupiedCells, int placedObjectIndex, ItemSO item)
     {
         this.OccupiedCells = occupiedCells;
-        this.ObjectIndex = objectIndex;
+        this.PlacedObjectIndex = placedObjectIndex;
         this.Item = item;
     }
 

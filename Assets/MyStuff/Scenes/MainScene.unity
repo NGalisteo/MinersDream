@@ -1048,7 +1048,7 @@ MonoBehaviour:
   gridVisualization: {fileID: 1853846080}
   preview: {fileID: 426131070}
   objectPlacer: {fileID: 1341279907}
-  inventoryData: {fileID: 0}
+  inventoryData: {fileID: 11400000, guid: f079c517d98641e4bb3afe087643a8dd, type: 2}
 --- !u!1 &725241882
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,7 +1705,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1341279906}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdf19f9a85f61c942b77257055a43282, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d1acfa3e6cd8da4e8a2a696615fe5c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPlacer
   placedGameObjects: []

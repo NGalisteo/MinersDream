@@ -6,16 +6,16 @@ public class PlacementState : IBuildingState
     ItemSO item;
     Grid grid;
     PreviewSystem previewSystem;
-    GridData placedObjectsData;
-    ObjectPlacer objectPlacer;
+    CellContent placedObjectsData;
+    PlacedObjectTracker objectPlacer;
     PlayerInventory inventoryData;
     PlacementSystem placementSystem;
 
     public PlacementState(ItemSO item,
                           Grid grid,
                           PreviewSystem previewSystem,
-                          GridData placedObjectsData,
-                          ObjectPlacer objectPlacer,
+                          CellContent placedObjectsData,
+                          PlacedObjectTracker objectPlacer,
                           PlayerInventory inventoryData,
                           PlacementSystem placementSystem)
     {
@@ -47,9 +47,11 @@ public class PlacementState : IBuildingState
             return;
 
         Vector3 spawnPosition = PreviewSystem.GetFootprintCenter(grid.CellToWorld(gridPosition), item.Size);
-        int index = objectPlacer.PlaceObject(item.Prefab, spawnPosition);
-
-        placedObjectsData.AddObjectAt(gridPosition, item.Size, item, index);
+        GameObject selectedGameObject = objectPlacer.PlaceObject(item.Prefab, spawnPosition);
+        PlacedItemInfo selectedGameObjectInfo = selectedGameObject.GetComponent<PlacedItemInfo>();
+        selectedGameObjectInfo.item = item;
+        selectedGameObjectInfo.gridPosition = gridPosition;
+        placedObjectsData.AddObjectAt(gridPosition, item.Size, item, selectedGameObjectInfo.trackingNumber);
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
 
         if (inventoryData.RemoveItem(item) == 0)
