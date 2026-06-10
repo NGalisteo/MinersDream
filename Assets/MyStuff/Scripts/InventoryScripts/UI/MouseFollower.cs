@@ -15,10 +15,10 @@ public class MouseFollower : MonoBehaviour
         item =  GetComponentInChildren<UIInventoryItem>();
     }
 
-    public void SetData(Sprite sprite, int quantity)
-    {
-        item.SetData(sprite, quantity);
-    }
+    //public void SetData(Sprite sprite, int quantity)
+    //{
+    //    item.SetData(sprite, quantity);
+    //}
 
     private void Update()
     {

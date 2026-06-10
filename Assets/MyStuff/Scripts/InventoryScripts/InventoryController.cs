@@ -32,9 +32,8 @@ namespace Inventory
         }
         private void Start()
         {
-            PrepareUI();
             PrepareInventoryData();
-
+            PrepareUI();
         }
 
         private void PrepareInventoryData()
@@ -44,21 +43,16 @@ namespace Inventory
             inventoryData.OnInventoryChanged += UpdateInventoryUI;
         }
 
+        private void PrepareUI()
+        {
+            inventoryUI.OnItemClicked += HandlePlacementCall;
+        }
         private void UpdateInventoryUI()
         {
             Dictionary<ItemSO, int> currentInventory = inventoryData.GetCurrentItems();
-            inventoryUI.ResetAllItems();
-            foreach (var item in currentInventory)
-            {
-                inventoryUI.UpdateData(item.Key, item.Key.ItemImage, item.Value);
-            }
-
+            inventoryUI.FillInventory(currentInventory);
         }
 
-        private void PrepareUI()
-        {
-            inventoryUI.InitializeInventoryUI(inventoryData);
-        }
 
         private void HandlePlacementCall(ItemSO item)
         {
@@ -73,12 +67,7 @@ namespace Inventory
                 if (inventoryUI.isActiveAndEnabled == false)
                 {
                     inventoryUI.Show();
-                    foreach (var item in inventoryData.GetCurrentItems())
-                    {
-                        inventoryUI.UpdateData(item.Key,
-                            item.Key.ItemImage,
-                            item.Value);
-                    }
+                    UpdateInventoryUI();
                 }
                 else
                 {
