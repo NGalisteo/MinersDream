@@ -17,9 +17,13 @@ namespace Inventory
         [SerializeField]
         private PlacementSystem placementSystem;
 
+        [SerializeField]
+        ItemSO IronMineSO;
+        [SerializeField]
+        ItemSO RubyMineSO;
+
         private PlayerInputActions action; // for input actions, new input system
 
-        public List<InventorySlot> initialItems = new List<InventorySlot>();
 
 
         private void Awake()
@@ -35,79 +39,45 @@ namespace Inventory
 
         private void PrepareInventoryData()
         {
-            inventoryData.Initialize();
-            inventoryData.OnInventoryUpdated += UpdateInventoryUI;
-            foreach (InventorySlot item in initialItems)
-            {
-                if (item.isEmpty)
-                    continue;
-                inventoryData.AddItem(item);
-            }
+            inventoryData.AddItem(IronMineSO, 5);
+            inventoryData.AddItem(RubyMineSO, 5);
+            inventoryData.OnInventoryChanged += UpdateInventoryUI;
         }
 
-        private void UpdateInventoryUI(Dictionary<int, InventorySlot> inventoryState)
+        private void UpdateInventoryUI()
         {
+            Dictionary<ItemSO, int> currentInventory = inventoryData.GetCurrentItems();
             inventoryUI.ResetAllItems();
-            foreach (var item in inventoryState)
+            foreach (var item in currentInventory)
             {
-                inventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
+                inventoryUI.UpdateData(item.Key, item.Key.ItemImage, item.Value);
             }
 
         }
 
         private void PrepareUI()
         {
-            inventoryUI.InitializeInventoryUI(inventoryData.Size);
-            inventoryUI.OnDescriptionRequested += HandlePlacementCall;
-            inventoryUI.OnSwapItems += HandleSwapItems;
-            inventoryUI.OnStartDragging += HandleDragging;
-            inventoryUI.OnItemActionRequested += HandleItemActionRequest;
+            inventoryUI.InitializeInventoryUI(inventoryData);
         }
 
-        private void HandleItemActionRequest(int itemIndex)
+        private void HandlePlacementCall(ItemSO item)
         {
-        }
-
-        private void HandleDragging(int itemIndex)
-        {
-            InventorySlot inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (inventoryItem.isEmpty)
-                return;
-            inventoryUI.CreateDraggedItem(inventoryItem.item.ItemImage, inventoryItem.quantity);
-        }
-
-        private void HandleSwapItems(int itemIndex_1, int itemIndex_2)
-        {
-            inventoryData.SwapItems(itemIndex_1, itemIndex_2);
-        }
-
-        private void HandlePlacementCall(int itemIndex)
-        {
-            InventorySlot inventoryItem = inventoryData.GetItemAt(itemIndex);
-            if (inventoryItem.isEmpty)
-            {
-                inventoryUI.ResetSelection();
-                return;
-            }
-            ItemSO item = inventoryItem.item;
-
             placementSystem.StartPlacement(item);
             inventoryUI.Hide();
-
         }
 
         public void Update()
         {
-            if (action.Player.OpenInventory.WasPressedThisFrame())//change this later to E, also change to new input actions, need reminder on how to do it.
+            if (action.Player.OpenInventory.WasPressedThisFrame())
             {
                 if (inventoryUI.isActiveAndEnabled == false)
                 {
                     inventoryUI.Show();
-                    foreach (var item in inventoryData.GetCurrentInventoryState())
+                    foreach (var item in inventoryData.GetCurrentItems())
                     {
                         inventoryUI.UpdateData(item.Key,
-                            item.Value.item.ItemImage,
-                            item.Value.quantity);
+                            item.Key.ItemImage,
+                            item.Value);
                     }
                 }
                 else

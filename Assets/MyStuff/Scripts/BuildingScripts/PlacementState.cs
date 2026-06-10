@@ -35,7 +35,10 @@ public class PlacementState : IBuildingState
         previewSystem.StopShowingPreview();
     }
 
-    public Vector2Int GetSize() => item.Size;
+    public Vector2Int GetSize()
+    {
+        return item.Size;
+    }
 
     public void OnAction(Vector3Int gridPosition)
     {

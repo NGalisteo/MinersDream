@@ -25,7 +25,7 @@ namespace Inventory.UI
         private int currentlyDraggedItemIndex = -1;
 
         public event Action<int> OnDescriptionRequested,
-            OnItemActionRequested,
+            OnItemClicked,
             OnStartDragging;
 
         public event Action<int, int> OnSwapItems;

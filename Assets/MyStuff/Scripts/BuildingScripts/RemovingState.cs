@@ -28,8 +28,10 @@ public class RemovingState : IBuildingState
         previewSystem.StopShowingPreview();
     }
 
-    public Vector2Int GetSize() => Vector2Int.one;
-
+    public Vector2Int GetSize()
+    {
+        return Vector2Int.one;
+    }
     public void OnAction(Vector3Int gridPosition)
     {
         if (placedObjectsData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false)
