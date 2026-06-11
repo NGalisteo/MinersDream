@@ -22,6 +22,8 @@ public class SelectionSystem : MonoBehaviour
 
     private GameObject hoveredGameObject;
 
+    public PlacedItemInfo CurrentHovered {  get { return hoveredItemInfo; } }
+
     private void Start()
     {
     }
