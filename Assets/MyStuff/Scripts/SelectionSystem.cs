@@ -10,29 +10,25 @@ public class SelectionSystem : MonoBehaviour
     private LayerMask itemLayerMask;
 
     [SerializeField]
-    private GameObject selectionBoxPrefab;
-
-    [SerializeField]
     private PlacementSystem placementSystem;
 
-    private GameObject selectionBox;
+    private PlacedItemInfo hoveredItemInfo;
 
-    private PlacedItemInfo selectedGameObjectInfo;
+    private PlacedItemInfo lastHovered;
 
-    private GameObject selectedGameObject;
+    private PlacedItemInfo clickedItemInfo;
 
+    private PlacedItemInfo lastClicked;
 
+    private GameObject hoveredGameObject;
 
     private void Start()
     {
-        selectionBox = Instantiate(selectionBoxPrefab);
-        selectionBox.SetActive(false);
     }
     private void Update()
     {
-        if(placementSystem.IsBuilding() == true)
+        if (placementSystem.IsBuilding() == true)
         {
-            selectionBox.SetActive(false);
             return;
         }
         Vector2 mousePosition = inputManager.GetMousePosition();
@@ -41,24 +37,69 @@ public class SelectionSystem : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100, itemLayerMask))
         {
-            selectedGameObject = hit.collider.gameObject;
-            selectedGameObjectInfo = selectedGameObject.GetComponent<PlacedItemInfo>();
-            if (selectedGameObjectInfo != null && selectedGameObjectInfo.item != null)
+            hoveredGameObject = hit.collider.gameObject;
+            hoveredItemInfo = hoveredGameObject.GetComponent<PlacedItemInfo>();
+            if (hoveredItemInfo != null && hoveredItemInfo.item != null)
             {
-                Debug.Log($"tracknumber {selectedGameObjectInfo.trackingNumber}, item name {selectedGameObjectInfo.item.name}" +
-                    $"grid pos {selectedGameObjectInfo.gridPosition}");
-                selectionBox.SetActive(true);
-                BoxCollider collider = selectedGameObject.GetComponent<BoxCollider>();
-                selectionBox.transform.localScale = collider.bounds.size;
-                selectionBox.transform.position = collider.bounds.center;
-            }
+                if (hoveredItemInfo != lastHovered)
+                {
+                    if (lastHovered != null && lastHovered != clickedItemInfo)
+                    {
+                        lastHovered.Unhighlight();
 
+                    }
+                    if(hoveredItemInfo != clickedItemInfo)
+                    {
+                        hoveredItemInfo.HighlightHover();
+                        lastHovered = hoveredItemInfo;
+                    }
+                }
+            }
         }
         else
         {
-            selectedGameObject = null;
-            selectedGameObjectInfo = null;
-            selectionBox.SetActive(false);
+            hoveredGameObject = null;
+            hoveredItemInfo = null;
+
+            if (lastHovered != null && lastHovered != clickedItemInfo)
+            {
+                lastHovered.Unhighlight();
+                lastHovered = null;
+            }
         }
+    }
+    private void HandleClick()
+    {
+        if (placementSystem.IsBuilding() == true)
+        {
+            return;
+        }
+        if (hoveredItemInfo != null)
+        {
+            if (clickedItemInfo != null)
+            {
+                clickedItemInfo.Unhighlight();
+            }
+            clickedItemInfo = hoveredItemInfo;
+            clickedItemInfo.HighlightClicked();
+            Debug.Log($"{clickedItemInfo.item.name}");
+        }
+        else
+        {
+            if(clickedItemInfo != null)
+            {
+                clickedItemInfo.Unhighlight();
+                clickedItemInfo = null;
+                Debug.Log($"Deselected");
+            }
+        }
+    }
+    private void OnEnable()
+    {
+        inputManager.OnClicked += HandleClick;
+    }
+    private void OnDisable()
+    {
+        inputManager.OnClicked -= HandleClick;
     }
 }
