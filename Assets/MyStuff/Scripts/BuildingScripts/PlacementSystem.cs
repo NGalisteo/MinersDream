@@ -34,6 +34,7 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         gridVisualization.SetActive(true);
+        objectPlacer.ShowAllFootprints();
         buildingState = new PlacementState(item, grid, preview, placedObjectsData, objectPlacer, inventoryData, this);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
@@ -46,6 +47,10 @@ public class PlacementSystem : MonoBehaviour
 
         Vector3Int gridPosition = GetCenteredGridPosition();
         buildingState.OnAction(gridPosition);
+        if(buildingState != null)
+        {
+            objectPlacer.ShowAllFootprints();
+        }
     }
 
     public bool IsBuilding()
@@ -59,6 +64,7 @@ public class PlacementSystem : MonoBehaviour
     public void StopPlacement()
     {
         gridVisualization.SetActive(false);
+        objectPlacer.HideAllFootprints();
         if (buildingState == null)
             return;
         buildingState.EndState();
@@ -71,6 +77,12 @@ public class PlacementSystem : MonoBehaviour
     public void RemoveItem(PlacedItemInfo info)
     {
         inventoryData.AddItem(info.item, 1);              // give it back
+        placedObjectsData.RemoveObjectAt(info.gridPosition);   // clear the cells
+        objectPlacer.RemoveObjectAt(info.trackingNumber);     // destroy the object
+    }
+
+    public void RemoveItemForMoving(PlacedItemInfo info)
+    {
         placedObjectsData.RemoveObjectAt(info.gridPosition);   // clear the cells
         objectPlacer.RemoveObjectAt(info.trackingNumber);     // destroy the object
     }
@@ -100,6 +112,15 @@ public class PlacementSystem : MonoBehaviour
             mousePosition.z - size.y / 2f
         );
         return grid.WorldToCell(offsetMouse);
+    }
+
+    public void StartMoving(ItemSO item,PlacedItemInfo placedItemInfo)
+    {
+        StopPlacement();
+        gridVisualization.SetActive(true);
+        buildingState = new MovingState(item, grid, preview, placedObjectsData, objectPlacer, inventoryData, this,placedItemInfo);
+        inputManager.OnClicked += PlaceStructure;
+        inputManager.OnExit += StopPlacement;
     }
 
     public void StartRemoving()

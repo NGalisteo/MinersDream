@@ -18,8 +18,6 @@ public class SelectionSystem : MonoBehaviour
 
     private PlacedItemInfo clickedItemInfo;
 
-    private PlacedItemInfo lastClicked;
-
     private GameObject hoveredGameObject;
 
     [SerializeField]
@@ -84,7 +82,6 @@ public class SelectionSystem : MonoBehaviour
             }
             clickedItemInfo = hoveredItemInfo;
             clickedItemInfo.HighlightClicked();
-            Debug.Log($"{clickedItemInfo.item.name}");
         }
         else
         {
@@ -92,7 +89,6 @@ public class SelectionSystem : MonoBehaviour
             {
                 clickedItemInfo.Unhighlight();
                 clickedItemInfo = null;
-                Debug.Log($"Deselected");
             }
         }
     }
@@ -106,14 +102,25 @@ public class SelectionSystem : MonoBehaviour
         }
 
     }
+
+    public void HandleMove()
+    {
+        if (clickedItemInfo != null)
+        {
+            placementSystem.StartMoving(CurrentSelected.item, CurrentSelected);
+            clickedItemInfo = null;
+        }
+    }
     private void OnEnable()
     {
         inputManager.OnClicked += HandleClick;
         selectedItem.OnRemoveClicked += HandleRemove;
+        selectedItem.OnMovingClicked += HandleMove;
     }
     private void OnDisable()
     {
         inputManager.OnClicked -= HandleClick;
         selectedItem.OnRemoveClicked -= HandleRemove;
+        selectedItem.OnMovingClicked -= HandleMove;
     }
 }

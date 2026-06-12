@@ -1384,7 +1384,6 @@ MonoBehaviour:
   mainCamera: {fileID: 330585545}
   selectionText: {fileID: 1494067545}
   removeButton: {fileID: 1584105578}
-  moveButton: {fileID: 1837921054}
 --- !u!1 &426131069
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,12 +16,16 @@ public class SelectionCardUI : MonoBehaviour
     [SerializeField]
     private Button removeButton;
 
-    public event Action OnRemoveClicked;
+    [SerializeField]
+    private Button moveButton;
+
+    public event Action OnRemoveClicked, OnMovingClicked;
 
 
     private void Awake()
     {
         removeButton.onClick.AddListener(HandleRemoveClick);
+        moveButton.onClick.AddListener(HandleMovingClick);
     }
     private void Update()
     {
@@ -42,5 +46,10 @@ public class SelectionCardUI : MonoBehaviour
     private void HandleRemoveClick()
     {
         OnRemoveClicked?.Invoke();
+    }
+
+    private void HandleMovingClick()
+    {
+        OnMovingClicked?.Invoke();
     }
 }

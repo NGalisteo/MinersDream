@@ -16,13 +16,6 @@ public class PlacedObjectTracker : MonoBehaviour
         return newObject;//returns the index of the item we just added. If the list had 3 items and we just added a 4th, Count is 4 so we return 3 (because lists start at index 0). 
     }
 
-    /*
-The flow when you place an item is:
-
-You click — PlacementSystem calls buildingState.OnAction(gridPosition)
-PlacementState.OnAction calls objectPlacer.PlaceObject(prefab, position) — spawns the item, gets back the index ticket
-PlacementState.OnAction then calls placedObjectsData.AddObjectAt(...) passing that index ticket — registers the cells as occupied
-     */
 
     internal void RemoveObjectAt(int gameObjectIndex)// removes the object
     {
@@ -33,9 +26,27 @@ PlacementState.OnAction then calls placedObjectsData.AddObjectAt(...) passing th
         placedGameObjects[gameObjectIndex] = null;// we set it to null because if we destroyed it all the items after it will shift an index lower, and would break the ticket numbers , and it would point to the wrong items.
     }
 
-    /*
-You click — RemovingState.OnAction calls selectedData.GetRepresentationIndex(gridPosition) — gets the index ticket from GridData
-Calls selectedData.RemoveObjectAt(gridPosition) — clears the cells in GridData
-Calls objectPlacer.RemoveObjectAt(gameObjectIndex) — destroys the actual GameObject using the ticket
- */
+    public void ShowAllFootprints()
+    {
+        foreach (var item in placedGameObjects)
+        {
+            if(item != null)
+            {
+                PlacedItemInfo placedItemInfo = item.GetComponent<PlacedItemInfo>();
+                placedItemInfo.HighlightHover();
+            }
+        }
+    }
+
+    public void HideAllFootprints()
+    {
+        foreach (var item in placedGameObjects)
+        {
+            if (item != null)
+            {
+                PlacedItemInfo placedItemInfo = item.GetComponent<PlacedItemInfo>();
+                placedItemInfo.Unhighlight();
+            }
+        }
+    }
 }
