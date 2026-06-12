@@ -22,11 +22,11 @@ public class SelectionSystem : MonoBehaviour
 
     private GameObject hoveredGameObject;
 
+    [SerializeField]
+    private SelectionCardUI selectedItem;
     public PlacedItemInfo CurrentHovered {  get { return hoveredItemInfo; } }
+    public PlacedItemInfo CurrentSelected {  get { return clickedItemInfo; } }
 
-    private void Start()
-    {
-    }
     private void Update()
     {
         if (placementSystem.IsBuilding() == true)
@@ -96,12 +96,24 @@ public class SelectionSystem : MonoBehaviour
             }
         }
     }
+
+    public void HandleRemove()
+    {
+        if(clickedItemInfo != null)
+        {
+            placementSystem.RemoveItem(CurrentSelected);
+            clickedItemInfo = null;
+        }
+
+    }
     private void OnEnable()
     {
         inputManager.OnClicked += HandleClick;
+        selectedItem.OnRemoveClicked += HandleRemove;
     }
     private void OnDisable()
     {
         inputManager.OnClicked -= HandleClick;
+        selectedItem.OnRemoveClicked -= HandleRemove;
     }
 }

@@ -15,11 +15,10 @@ public class HoverCardUI : MonoBehaviour
 
     private void Update()
     {
-        if(selectionSystem.CurrentHovered != null)
+        if(selectionSystem.CurrentHovered != null && selectionSystem.CurrentSelected != selectionSystem.CurrentHovered)
         {
             hoverCard.SetActive(true);
             hoverText.text = selectionSystem.CurrentHovered.item.Name;
-            Debug.Log($"{hoverText.text}");
             BoxCollider hoveredCollider = selectionSystem.CurrentHovered.GetComponent<BoxCollider>();
             hoverCard.transform.position = hoveredCollider.bounds.center;
             hoverCard.transform.rotation = mainCamera.transform.rotation;

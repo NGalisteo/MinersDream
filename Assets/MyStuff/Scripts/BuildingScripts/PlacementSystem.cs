@@ -1,6 +1,5 @@
 using Inventory.Model;
 using UnityEngine;
-
 public class PlacementSystem : MonoBehaviour
 {
     [SerializeField]
@@ -67,6 +66,13 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnExit -= StopPlacement;
         lastDetectedPosition = Vector3Int.zero;
         buildingState = null;
+    }
+
+    public void RemoveItem(PlacedItemInfo info)
+    {
+        inventoryData.AddItem(info.item, 1);              // give it back
+        placedObjectsData.RemoveObjectAt(info.gridPosition);   // clear the cells
+        objectPlacer.RemoveObjectAt(info.trackingNumber);     // destroy the object
     }
 
     private void Update()
