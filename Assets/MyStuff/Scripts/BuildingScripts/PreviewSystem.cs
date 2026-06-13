@@ -16,6 +16,8 @@ public class PreviewSystem : MonoBehaviour
 
     private Renderer cellIndicatorRenderer;
     private Vector2Int currentSize;
+    private Vector2Int activeSize;
+
 
     private void Start()
     {
@@ -27,6 +29,7 @@ public class PreviewSystem : MonoBehaviour
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
         currentSize = size;
+        activeSize = size;
         previewObject = Instantiate(prefab);
         PreparePreview(previewObject);
         PrepareCursor(size);
@@ -94,25 +97,33 @@ public class PreviewSystem : MonoBehaviour
     private void MoveCursor(Vector3 position)
     {
         cellIndicator.transform.position = new Vector3(
-            position.x + currentSize.x / 2f,
-            position.y,
-            position.z + currentSize.y / 2f
-        );
+     position.x + activeSize.x / 2f,
+     position.y,
+     position.z + activeSize.y / 2f
+ );
     }
 
     // Ghost goes to footprint center — matches where real item spawns
     private void MovePreview(Vector3 position)
     {
         previewObject.transform.position = new Vector3(
-            position.x + currentSize.x / 2f,
-            position.y + previewYOffset,
-            position.z + currentSize.y / 2f
-        );
+     position.x + activeSize.x / 2f,
+     position.y,
+     position.z + activeSize.y / 2f
+ );
     }
 
     public void RotatePreview()
     {
         previewObject.transform.Rotate(0, 90, 0);
+
+        float angle = previewObject.transform.eulerAngles.y;
+        activeSize = currentSize;
+        if (angle == 90 || angle == 270)
+        {
+            activeSize = new Vector2Int(currentSize.y, currentSize.x);
+        }
+        PrepareCursor(activeSize);
     }
 
     internal void StartShowingRemovePreview()

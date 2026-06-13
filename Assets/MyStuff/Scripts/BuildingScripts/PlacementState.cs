@@ -38,7 +38,6 @@ public class PlacementState : IBuildingState
     public Vector2Int GetSize()
     {
         float angle = previewSystem.GetPreviewInfo().transform.eulerAngles.y;
-        Debug.Log($"angle: {angle}, size returned: {(angle == 90 || angle == 270 ? new Vector2Int(item.Size.y, item.Size.x) : item.Size)}");
         if (previewSystem.GetPreviewInfo().transform.eulerAngles.y == 90 || previewSystem.GetPreviewInfo().transform.eulerAngles.y == 270)
         {
             return new Vector2Int(item.Size.y, item.Size.x);
