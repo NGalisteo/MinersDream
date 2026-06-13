@@ -338,6 +338,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Button"",
+                    ""id"": ""33c534aa-0a62-41eb-ad3f-f971557d4d86"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -371,6 +380,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Escap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b36d5fc-43f0-4bc5-b043-d47b3d4b785f"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -413,6 +433,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_BuildingSystem_CursorPosition = m_BuildingSystem.FindAction("CursorPosition", throwIfNotFound: true);
         m_BuildingSystem_PlaceItem = m_BuildingSystem.FindAction("PlaceItem", throwIfNotFound: true);
         m_BuildingSystem_Escap = m_BuildingSystem.FindAction("Escap", throwIfNotFound: true);
+        m_BuildingSystem_Rotate = m_BuildingSystem.FindAction("Rotate", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -756,6 +777,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_BuildingSystem_CursorPosition;
     private readonly InputAction m_BuildingSystem_PlaceItem;
     private readonly InputAction m_BuildingSystem_Escap;
+    private readonly InputAction m_BuildingSystem_Rotate;
     /// <summary>
     /// Provides access to input actions defined in input action map "BuildingSystem".
     /// </summary>
@@ -779,6 +801,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "BuildingSystem/Escap".
         /// </summary>
         public InputAction @Escap => m_Wrapper.m_BuildingSystem_Escap;
+        /// <summary>
+        /// Provides access to the underlying input action "BuildingSystem/Rotate".
+        /// </summary>
+        public InputAction @Rotate => m_Wrapper.m_BuildingSystem_Rotate;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -814,6 +840,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Escap.started += instance.OnEscap;
             @Escap.performed += instance.OnEscap;
             @Escap.canceled += instance.OnEscap;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
         }
 
         /// <summary>
@@ -834,6 +863,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Escap.started -= instance.OnEscap;
             @Escap.performed -= instance.OnEscap;
             @Escap.canceled -= instance.OnEscap;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
         }
 
         /// <summary>
@@ -980,5 +1012,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEscap(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Rotate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotate(InputAction.CallbackContext context);
     }
 }

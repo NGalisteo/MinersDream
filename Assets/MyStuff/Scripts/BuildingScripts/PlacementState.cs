@@ -37,7 +37,14 @@ public class PlacementState : IBuildingState
 
     public Vector2Int GetSize()
     {
+        float angle = previewSystem.GetPreviewInfo().transform.eulerAngles.y;
+        Debug.Log($"angle: {angle}, size returned: {(angle == 90 || angle == 270 ? new Vector2Int(item.Size.y, item.Size.x) : item.Size)}");
+        if (previewSystem.GetPreviewInfo().transform.eulerAngles.y == 90 || previewSystem.GetPreviewInfo().transform.eulerAngles.y == 270)
+        {
+            return new Vector2Int(item.Size.y, item.Size.x);
+        }
         return item.Size;
+
     }
 
     public void OnAction(Vector3Int gridPosition)
@@ -46,12 +53,13 @@ public class PlacementState : IBuildingState
         if (!placementValidity)
             return;
 
-        Vector3 spawnPosition = PreviewSystem.GetFootprintCenter(grid.CellToWorld(gridPosition), item.Size);
+        Vector3 spawnPosition = PreviewSystem.GetFootprintCenter(grid.CellToWorld(gridPosition), GetSize());
         GameObject selectedGameObject = objectPlacer.PlaceObject(item.Prefab, spawnPosition);
         PlacedItemInfo selectedGameObjectInfo = selectedGameObject.GetComponent<PlacedItemInfo>();
+        selectedGameObject.transform.rotation = previewSystem.GetPreviewInfo().transform.rotation;
         selectedGameObjectInfo.item = item;
         selectedGameObjectInfo.gridPosition = gridPosition;
-        placedObjectsData.AddObjectAt(gridPosition, item.Size, item, selectedGameObjectInfo.trackingNumber);
+        placedObjectsData.AddObjectAt(gridPosition, GetSize(), item, selectedGameObjectInfo.trackingNumber);
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
 
         if (inventoryData.RemoveItem(item) == 0 )
@@ -60,7 +68,7 @@ public class PlacementState : IBuildingState
 
     private bool CheckPlacementValidity(Vector3Int gridPosition)
     {
-        return placedObjectsData.CanPlaceObjectAt(gridPosition, item.Size);
+        return placedObjectsData.CanPlaceObjectAt(gridPosition, GetSize());
     }
 
     public void UpdateState(Vector3Int gridPosition)

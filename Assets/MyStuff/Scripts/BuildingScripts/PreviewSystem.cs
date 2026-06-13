@@ -42,6 +42,10 @@ public class PreviewSystem : MonoBehaviour
         }
     }
 
+    public GameObject GetPreviewInfo()
+    {
+        return previewObject;
+    }
     private void PreparePreview(GameObject previewObject)
     {
         Renderer[] renderers = previewObject.GetComponentsInChildren<Renderer>();
@@ -104,6 +108,11 @@ public class PreviewSystem : MonoBehaviour
             position.y + previewYOffset,
             position.z + currentSize.y / 2f
         );
+    }
+
+    public void RotatePreview()
+    {
+        previewObject.transform.Rotate(0, 90, 0);
     }
 
     internal void StartShowingRemovePreview()

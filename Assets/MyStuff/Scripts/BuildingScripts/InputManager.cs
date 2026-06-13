@@ -15,7 +15,7 @@ public class InputManager : MonoBehaviour
     private PlayerInputActions action; // for input actions, new input system
 
 
-    public event Action OnClicked, OnExit; //These are events, it notifies that something happened, they take no parameters and they return nothing
+    public event Action OnClicked, OnExit, OnRotate; //These are events, it notifies that something happened, they take no parameters and they return nothing
 
 
     private void Awake()
@@ -42,6 +42,9 @@ public class InputManager : MonoBehaviour
         //same for this
         if (action.BuildingSystem.Escap.WasPressedThisFrame())
             OnExit?.Invoke();
+
+        if(action.BuildingSystem.Rotate.WasPressedThisFrame())
+            OnRotate?.Invoke();
     }
 
     public bool IsPointerOverUI()

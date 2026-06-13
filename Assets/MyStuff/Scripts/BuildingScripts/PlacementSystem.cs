@@ -38,6 +38,7 @@ public class PlacementSystem : MonoBehaviour
         buildingState = new PlacementState(item, grid, preview, placedObjectsData, objectPlacer, inventoryData, this);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
+        inputManager.OnRotate += RotateItem;
     }
 
     private void PlaceStructure()
@@ -70,6 +71,7 @@ public class PlacementSystem : MonoBehaviour
         buildingState.EndState();
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
+        inputManager.OnRotate -= RotateItem;
         lastDetectedPosition = Vector3Int.zero;
         buildingState = null;
     }
@@ -113,7 +115,10 @@ public class PlacementSystem : MonoBehaviour
         );
         return grid.WorldToCell(offsetMouse);
     }
-
+    public void RotateItem()
+    {
+        preview.RotatePreview();
+    }
     public void StartMoving(ItemSO item,PlacedItemInfo placedItemInfo)
     {
         StopPlacement();
@@ -121,6 +126,7 @@ public class PlacementSystem : MonoBehaviour
         buildingState = new MovingState(item, grid, preview, placedObjectsData, objectPlacer, inventoryData, this,placedItemInfo);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
+        inputManager.OnRotate += RotateItem;
     }
 
     public void StartRemoving()
